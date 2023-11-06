@@ -1,30 +1,19 @@
-# Compiler and compile options
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Iinclude
+CC=g++
+CFLAGS=-Wall -g
+LIBS=-lsndfile -lportaudio
 
-# Directories
-SRCDIR = src
-BINDIR = bin
+# Add any other .cpp files here
+SOURCES=src/main.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=bin/my_program
 
-# Files and targets
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
-TARGET = $(BINDIR)/my_program
+all: $(SOURCES) $(EXECUTABLE)
 
-# Default target
-all: $(TARGET)
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LIBS)
 
-# Compile and link source files into a binary
-$(TARGET): $(SOURCES) | $(BINDIR)
-	@$(CXX) $(CXXFLAGS) $^ -o $@
+.cpp.o:
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Create the bin directory if it doesn't exist
-$(BINDIR):
-	@mkdir -p $(BINDIR)
-
-# Clean up
 clean:
-	@rm -f $(TARGET)
-	@rm -rf $(BINDIR)/*  # This line ensures the bin directory is cleaned up as well
-
-# Declare non-file targets
-.PHONY: all clean
+	rm -f src/*.o bin/my_program
