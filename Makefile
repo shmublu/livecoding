@@ -1,19 +1,18 @@
-CC=g++
-CFLAGS=-Wall -g
-LIBS=-lsndfile -lportaudio
+# Compiler and compiler flags
+CXX = g++
+CXXFLAGS = -std=c++17
+SFML_INCLUDE = -I/opt/homebrew/Cellar/sfml/2.6.1/include
+SFML_LIBS = -L/opt/homebrew/Cellar/sfml/2.6.1/lib -lsfml-audio -lsfml-system
 
-# Add any other .cpp files here
-SOURCES=src/main.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=bin/my_program
+# Source files and output executable
+SRCS = src/main.cpp
+EXECUTABLE = MainTest
 
-all: $(SOURCES) $(EXECUTABLE)
+# Build rule
+all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LIBS)
-
-.cpp.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+$(EXECUTABLE): $(SRCS)
+	$(CXX) $(CXXFLAGS) $(SFML_INCLUDE) $^ -o $@ $(SFML_LIBS)
 
 clean:
-	rm -f src/*.o bin/my_program
+	rm -f $(EXECUTABLE)
