@@ -30,9 +30,8 @@ int main() {
             std::cout << "Invalid input. Please enter a valid number." << std::endl;
         }
         create_rhythm(number, ++count);
-        create_instrument("./samples/uh.wav", count, count);
+        create_instrument("./samples/big snare.wav", count, count);
         
-} 
-
-    }
+    } 
+}
 

@@ -1,15 +1,12 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
+#include "instrument.h"
 #include <string>
 #include <unordered_map>
 #include <mutex>
 #include <SFML/Audio.hpp>
 
-struct Instrument {
-    std::string filepath;
-    int rhythm_id;
-};
 
 struct Rhythm {
     uint64_t pattern;
