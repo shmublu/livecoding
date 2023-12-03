@@ -1,21 +1,20 @@
 #include "instrument.h"
 #include <unordered_map>
 
-Instrument::Instrument(const std::string& path, int id) : filepath(path), rhythm_id(id),  player(path){
+Instrument::Instrument(const std::string& path, int id, int pitchVal) : filepath(path), rhythm_id(id),  pitch(pitchVal), player(path){
 }
 
 void Instrument::play(){
     std::thread([this]() {
-            this->player.playSound();
+            this->player.playSound(pitch);
         }).detach(); // Detach the thread to run independently
 }
-Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id) {
-    // Use emplace to add a new instrument if it doesn't exist
+Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, int pitchVal) {
     auto it = instruments.find(instrument_id);
 
     // If not found, emplace a new instrument into the map
     if (it == instruments.end()) {
-        Instrument newInstr("./samples/uh.wav", 0);
+        Instrument newInstr("./samples/uh.wav", 0, pitchVal);
         it = instruments.emplace(instrument_id, newInstr).first;
     }
 
@@ -29,10 +28,11 @@ Player::Player(const std::string& path) : filepath(path) {
 
 
 
-void Player::playSound(){
+void Player::playSound(float pitch){
     // Load the audio file
     
     loadBuffer();
+    sound.setPitch(pitch);
 
     sound.play();
     /*
