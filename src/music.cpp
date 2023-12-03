@@ -16,7 +16,6 @@ void music_thread_function() {
             std::lock_guard<std::mutex> guard(state_mutex);
 
             for (int bit = 0; bit < bitsInRhythm; ++bit) {
-                std::cout << bit << ": "; 
                 for (auto& pair : instruments) {
                     int instrument_id = pair.first;
                     Instrument& instrument = pair.second;
@@ -30,7 +29,6 @@ void music_thread_function() {
             }
         }
         std::this_thread::sleep_for(interval);
-        std::cout << std::endl; 
     }
 }
 

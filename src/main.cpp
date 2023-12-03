@@ -4,53 +4,26 @@
 #include <sstream>
 #include <algorithm>
 #include <bitset>
+#include "shell.h"
+
 
 int main() {
     // test
     start_music_thread();
+     std::map<CommandKey, Command> commands;
 
-    std::string input;
-    int number;
-    int count = 0;
- 
-while (true) {
-    std::string input;
-    int rhythmNumber, pitchNumber;
+    // Registering commands
+    commands[{"ci", 4}] = Command{"create_instrument", 4, executeCreateInstrument, "Create an instrument"};
+    commands[{"cr", 2}] = Command{"create_rhythm", 2, executeCreateRhythm, "Create a rhythm"};
+    commands[{"ls", 0}] = Command{"ls", 0, listFiles, "List files in the current directory"};
+    commands[{"greet", 1}] = Command{"greet", 1, greet, "Greet a user by name"};
+    commands[{"help", 0}] = Command{"help", 0, [commands](auto args){ showHelp(args, commands); }, "Show help text"};
+ while (true) {
+        std::cout << "> ";
+        std::string input;
+        std::getline(std::cin, input);
 
-    std::cout << "Enter an 8-bit binary string (or 'exit' to quit): ";
-    std::getline(std::cin, input);
-
-    // Check if the user wants to exit
-    if (input == "exit") {
-        break;
+        executeCommand(input, commands);
     }
-
-    if (input.length() != 8) {
-        std::cout << "Invalid input, enter an 8-bit binary string." << std::endl;
-        continue;
-    }
-  
-    // Reverse so plays in order of input
-    std::reverse(input.begin(), input.end());
-    std::bitset<8> binaryRepresentation(input);
-    unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
-
-    std::cout << "Enter a pitch number: ";
-    std::getline(std::cin, input);
-
-    // Using stringstream to convert string to number for pitch
-    std::stringstream ssPitch(input);
-    if (ssPitch >> pitchNumber) {
-        std::cout << "Pitch number entered: " << pitchNumber << std::endl;
-    } else {
-        std::cout << "Invalid input for pitch. Please enter a valid number." << std::endl;
-        continue; // Go to the next iteration of the loop
-    }
-
-    create_rhythm(character, ++count);
-    create_instrument("./samples/big snare.wav", count, count, pitchNumber);
-    std::cout << "Created instrument " << count << " with rhythm " << input << std::endl;
-}
-
 }
 
