@@ -5,9 +5,10 @@ Instrument::Instrument(const std::string& path, int id) : filepath(path), rhythm
 }
 
 void Instrument::play(){
-    player.playSound();
+    std::thread([this]() {
+            this->player.playSound();
+        }).detach(); // Detach the thread to run independently
 }
-
 Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id) {
     // Use emplace to add a new instrument if it doesn't exist
     auto it = instruments.find(instrument_id);
@@ -24,6 +25,9 @@ Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instr
 Player::Player(const std::string& path) : filepath(path) {
     loadBuffer();
 }
+
+
+
 
 void Player::playSound(){
     // Load the audio file
