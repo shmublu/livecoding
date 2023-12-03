@@ -6,7 +6,7 @@
 
 
 const int periodSeconds = 4;
-const int bitsInRhythm = 64;
+const int bitsInRhythm = 8;
 const std::chrono::milliseconds interval(periodSeconds * 1000 / bitsInRhythm);
 
 void music_thread_function() {

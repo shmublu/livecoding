@@ -13,6 +13,6 @@ void create_instrument(const std::string& filepath, int rhythm_id, int instrumen
     //instrument.play();
 }
 
-void create_rhythm(uint64_t pattern, int rhythm_id) {
+void create_rhythm(char pattern, int rhythm_id) {
     rhythms[rhythm_id] = {pattern};
 }

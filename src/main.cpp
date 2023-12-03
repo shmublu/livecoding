@@ -7,14 +7,13 @@ int main() {
     // test
     start_music_thread();
 
-    
     std::string input;
     int number;
     int count = 0;
 
     while (true) {
         
-        std::cout << "Enter a number (or 'exit' to quit): ";
+        std::cout << "Enter an 8-bit binary string (or 'exit' to quit): ";
         std::getline(std::cin, input);
 
         // Check if the user wants to exit
@@ -22,14 +21,19 @@ int main() {
             break;
         }
 
-        // Using stringstream to convert string to number
-        std::stringstream ss(input);
-        if (ss >> number) {
-            std::cout << "You entered: " << number << std::endl;
-        } else {
-            std::cout << "Invalid input. Please enter a valid number." << std::endl;
+        if (input.length() != 8) {
+            std::cout << "Invalid input, Please enter an 8-bit binary string." << std::endl;
         }
-        create_rhythm(number, ++count);
+
+        std::bitset<8> binaryRepresentation(input);
+        unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
+
+        // Print the result
+        std::cout << "Binary: " << binaryRepresentation << std::endl;
+        std::cout << "Decimal: " << static_cast<unsigned int>(character) << std::endl;
+        std::cout << "Character: " << character << std::endl;
+
+        create_rhythm(character, ++count);
         create_instrument("./samples/big snare.wav", count, count);
         
     } 
