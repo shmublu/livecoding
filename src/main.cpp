@@ -2,6 +2,7 @@
 #include <iostream>
 #include "music.h"
 #include <sstream>
+#include <algorithm>
 
 int main() {
     // test
@@ -22,19 +23,15 @@ int main() {
         }
 
         if (input.length() != 8) {
-            std::cout << "Invalid input, Please enter an 8-bit binary string." << std::endl;
+            std::cout << "Invalid input, enter an 8-bit binary string." << std::endl;
+        } else {
+            std::reverse(input.begin(), input.end());
+            std::bitset<8> binaryRepresentation(input);
+            unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
+            create_rhythm(character, ++count);
+            create_instrument("./samples/big snare.wav", count, count);
+            std::cout << "Created instrument " << count << " with rhythm " << input << std::endl;
         }
-
-        std::bitset<8> binaryRepresentation(input);
-        unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
-
-        // Print the result
-        std::cout << "Binary: " << binaryRepresentation << std::endl;
-        std::cout << "Decimal: " << static_cast<unsigned int>(character) << std::endl;
-        std::cout << "Character: " << character << std::endl;
-
-        create_rhythm(character, ++count);
-        create_instrument("./samples/big snare.wav", count, count);
         
     } 
 }
