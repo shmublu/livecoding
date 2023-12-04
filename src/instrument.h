@@ -13,7 +13,7 @@ public:
     
     Player(const std::string& path);
 
-    void playSound();
+    void playSound(float pitch);
     void loadBuffer();
     
 private:
@@ -26,12 +26,13 @@ class Instrument {
 public:
     std::string filepath;
     int rhythm_id;
+    int pitch;
     Player player;
 
-    Instrument(const std::string& path, int id);
+    Instrument(const std::string& path, int id, int pitch);
     void play();
 
-    static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id);
+    static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, int pitchVal);
 
 
 };

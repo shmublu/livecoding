@@ -16,7 +16,7 @@ extern std::unordered_map<int, Rhythm> rhythms;
 extern std::mutex state_mutex;
 
 void start_music_thread();
-void create_instrument(const std::string& filepath, int rhythm_id, int instrument_id);
+void create_instrument(const std::string& filepath, int rhythm_id, int instrument_id, int pitch);
 void create_rhythm(char pattern, int rhythm_id);
 
 #endif // MUSIC_H
