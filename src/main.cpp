@@ -24,14 +24,15 @@ int main() {
 
         if (input.length() != 8) {
             std::cout << "Invalid input, enter an 8-bit binary string." << std::endl;
-        } else {
-            std::reverse(input.begin(), input.end());
-            std::bitset<8> binaryRepresentation(input);
-            unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
-            create_rhythm(character, ++count);
-            create_instrument("./samples/big snare.wav", count, count);
-            std::cout << "Created instrument " << count << " with rhythm " << input << std::endl;
+            continue;
         }
+
+        std::reverse(input.begin(), input.end());
+        std::bitset<8> binaryRepresentation(input);
+        unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
+        create_rhythm(character, ++count);
+        create_instrument("./samples/big snare.wav", count, count);
+        std::cout << "Created instrument " << count << " with rhythm " << input << std::endl;
         
     } 
 }
