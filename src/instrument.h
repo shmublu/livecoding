@@ -26,13 +26,13 @@ class Instrument {
 public:
     std::string filepath;
     int rhythm_id;
-    int pitch;
+    float pitch;
     Player player;
 
-    Instrument(const std::string& path, int id, int pitch);
+    Instrument(const std::string& path, int id, float pitch);
     void play();
 
-    static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, int pitchVal);
+    static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, float pitchVal);
 
 
 };
