@@ -50,6 +50,14 @@ while (true) {
     create_rhythm(character, ++count);
     create_instrument("./samples/big snare.wav", count, count, pitchNumber);
     std::cout << "Created instrument " << count << " with rhythm " << input << std::endl;
+    /*
+        void change_rhythm_pattern(char pattern, int rhythm_id);
+        void change_instrument_file(const std::string& filepath, int instrument_id);
+        void change_instrument_pitch(float pitch, int instrument_id);
+        char get_instrument_rhythm(int instrument_id);
+    */
+    
+    char rhyt = get_instrument_rhythm();
 }
 
 }
