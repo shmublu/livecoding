@@ -56,9 +56,24 @@ while (true) {
         void change_instrument_pitch(float pitch, int instrument_id);
         char get_instrument_rhythm(int instrument_id);
     */
-    
-    char rhyt = get_instrument_rhythm();
-}
+
+    // Testing Get_instrument_rhythm
+    char rhyt = get_instrument_rhythm(count);
+    std::bitset<8> rhytbinary(rhyt);
+    std::cout << "Testing get instr rhyt -- rhythm: " << rhytbinary << std:: endl;
+
+    // Testing change_rhythm_pattern
+    change_rhythm_pattern('A', count);
+    rhyt = get_instrument_rhythm(count);
+    std::bitset<8> rhytbinary2(rhyt);
+    std::cout << "Testing change rhyt -- new rhythm: " << rhytbinary2 << std:: endl;
+
+    // Testing change_instrument_pitch
+    change_instrument_pitch(10, count);
+
+    // Testing change_instrument_file
+    change_instrument_file("./samples/cocoon_perc.wav", count);
+    }
 
 }
 
