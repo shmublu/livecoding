@@ -37,7 +37,7 @@ void executeCreateInstrument(const std::vector<std::string>& stringArgs) {
     }
     try {
         create_instrument(
-            "../samples/" + stringArgs[0],
+            "./samples/" + stringArgs[0],
             std::stoi(stringArgs[1]),
             std::stoi(stringArgs[2]),
             std::stoi(stringArgs[3])

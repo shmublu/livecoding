@@ -21,7 +21,7 @@ void music_thread_function() {
                     Instrument& instrument = pair.second;
                     const Rhythm& rhythm = rhythms[instrument.rhythm_id];
                     if (rhythm.pattern & (1ULL << bit)) {
-                        std::cout << "ID" << instrument_id << ", ";
+                        //std::cout << "ID" << instrument_id << ", ";
                         instrument.play();
                     }
                 }
