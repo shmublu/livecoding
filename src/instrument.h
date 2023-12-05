@@ -2,38 +2,28 @@
 #define INSTRUMENT_H
 
 #include <string>
-#include <SFML/Audio.hpp>
 #include <iostream>
 #include <unordered_map>
 #include <thread>
+#include "../external/rtmidi/RtMidi.h"
 
 class Player {
 public:
-    std::string filepath;
-    
-    Player(const std::string& path);
-
+    uint32_t outputChannel;
+    Player(const uint32_t outputChannel);
     void playSound(float pitch);
-    void loadBuffer();
-    
-private:
-    sf::Sound sound;
-    sf::SoundBuffer buffer;
-    bool bufferLoaded = false;     
+    RtMidiOut * midiout;
 };
 
 class Instrument {
 public:
-    std::string filepath;
+    uint32_t outputChannel;
     int rhythm_id;
     int pitch;
     Player player;
 
-    Instrument(const std::string& path, int id, int pitch);
+    Instrument(const uint32_t outputChannel, int id, int pitch);
     void play();
-
-    static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, int pitchVal);
-
 
 };
 
