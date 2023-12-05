@@ -5,7 +5,7 @@ SFML_INCLUDE = -I/opt/homebrew/Cellar/sfml/2.6.1/include
 SFML_LIBS = -L/opt/homebrew/Cellar/sfml/2.6.1/lib -lsfml-audio -lsfml-system
 
 # Source files and output executable
-SRCS = src/main.cpp src/commands.cpp src/music.cpp src/instrument.cpp
+SRCS = src/main.cpp src/commands.cpp src/music.cpp src/instrument.cpp src/shell.cpp
 EXECUTABLE = MainTest src/*.o
 
 # Build rule
