@@ -9,10 +9,35 @@ void create_instrument(const std::string& filepath, int rhythm_id, int instrumen
     std::lock_guard<std::mutex> guard(state_mutex);
     Instrument newInstrument(filepath, rhythm_id, pitchVal);
     instruments.emplace(instrument_id, newInstrument);
-    //Instrument& instrument = Instrument::getInstrument(instruments, instrument_id);
-    //instrument.play();
 }
 
 void create_rhythm(char pattern, int rhythm_id) {
     rhythms[rhythm_id] = {pattern};
+}
+
+void change_rhythm_pattern(char pattern, int rhythm_id){
+    rhythms[rhythm_id] = {pattern};
+}
+
+void change_instrument_file(const std::string& filepath, int instrument_id){
+    auto inst = instruments.find(instrument_id);
+    if(inst != instruments.end()){
+        inst->second.filepath = filepath;
+    }
+}
+
+void change_instrument_pitch(float pitch, int instrument_id){
+    auto inst = instruments.find(instrument_id);
+    if(inst != instruments.end() && pitch > 0){
+        inst->second.pitch = pitch;
+    }
+}
+
+char get_instrument_rhythm(int instrument_id){
+    auto inst = instruments.find(instrument_id);
+    if(inst != instruments.end()){
+        int rhythm_id = inst->second.rhythm_id;
+        return rhythms[rhythm_id].pattern;
+    }
+    return '\0';
 }

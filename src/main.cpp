@@ -14,7 +14,8 @@ int main() {
  
 while (true) {
     std::string input;
-    int rhythmNumber, pitchNumber;
+    int rhythmNumber;
+    float pitchNumber;
 
     std::cout << "Enter an 8-bit binary string (or 'exit' to quit): ";
     std::getline(std::cin, input);
