@@ -86,3 +86,11 @@ char get_instrument_rhythm(std::string instrument_name){
     }
     return '\0';
 }
+
+void delete_instrument(std::string instrument_name){
+    int instrument_id = find_id_num(instrument_names, instrument_name);
+    if(instrument_id < 0){
+        return;
+    }
+    instruments.erase(instrument_id);
+}

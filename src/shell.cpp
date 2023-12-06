@@ -70,6 +70,21 @@ void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
         std::cout << "Error: " << e.what() << "\n";
     }
 }
+
+void executeDeleteInstrument(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 1) {
+        std::cout << "Error: Incorrect number of arguments for delete_instrument\n";
+        return;
+    }
+    try {
+        delete_instrument(
+            stringArgs[0]
+        );
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+    }
+}
+
 void listFiles(std::vector<std::string> args) {
     // Implementation for listing files
     std::cout << "Listing files...\n";

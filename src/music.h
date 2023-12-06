@@ -21,6 +21,8 @@ void start_music_thread();
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitch);
 void create_rhythm(char pattern, std::string rhythm_id);
 
+void delete_instrument(std::string instrument_name);
+
 void change_rhythm_pattern(char pattern, std::string rhythm_name);
 void change_instrument_file(const std::string& filepath, std::string instrument_name);
 void change_instrument_pitch(float pitch, std::string instrument_name);
