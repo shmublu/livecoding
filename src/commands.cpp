@@ -11,6 +11,14 @@ void create_instrument(const std::string& filepath, int rhythm_id, int instrumen
     instruments.emplace(instrument_id, newInstrument);
 }
 
+void destroy_instrument(int instrument_id) {
+    std::lock_guard<std::mutex> guard(state_mutex);
+    if (instruments.find(instrument_id) != instruments.end()) {
+    instruments.erase(instrument_id); // Delete the entry with the key 'id'
+    }  
+}
+
+
 void create_rhythm(char pattern, int rhythm_id) {
     rhythms[rhythm_id] = {pattern};
 }

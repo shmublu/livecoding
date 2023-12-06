@@ -47,6 +47,35 @@ void executeCreateInstrument(const std::vector<std::string>& stringArgs) {
     }
 }
 
+void executeDestroyInstrument(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 1) {
+        std::cout << "Error: Incorrect number of arguments for destroy_instrument\n";
+        return;
+    }
+    try {
+        destroy_instrument(
+            stoi(stringArgs[0])
+        );
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+    }
+}
+
+void executeChangePitch(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 2) {
+        std::cout << "Error: Incorrect number of arguments for change_pitch\n";
+        return;
+    }
+    try {
+        change_instrument_pitch(
+            std::stof(stringArgs[0]),
+            std::stoi(stringArgs[1])
+        );
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+    }
+}
+
 
 void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
     if (stringArgs.size() != 2) {
@@ -61,10 +90,6 @@ void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << "\n";
     }
-}
-void listFiles(std::vector<std::string> args) {
-    // Implementation for listing files
-    std::cout << "Listing files...\n";
 }
 
 void greet(std::vector<std::string> args) {
