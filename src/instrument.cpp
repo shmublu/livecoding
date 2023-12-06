@@ -1,7 +1,7 @@
 #include "instrument.h"
 #include <unordered_map>
 
-Instrument::Instrument(const std::string& path, std::string& id, float pitchVal) : filepath(path), rhythm_id(id),  pitch(pitchVal), player(path){
+Instrument::Instrument(const std::string& path, int id, float pitchVal) : filepath(path), rhythm_id(id),  pitch(pitchVal), player(path){
 }
 
 void Instrument::play(){
@@ -9,12 +9,12 @@ void Instrument::play(){
             this->player.playSound(pitch);
         }).detach(); // Detach the thread to run independently
 }
-Instrument& Instrument::getInstrument(std::unordered_map<const std::string, Instrument>& instruments, const std::string& instrument_id) {
+Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, float pitchVal) {
     auto it = instruments.find(instrument_id);
 
     // If not found, emplace a new instrument into the map
     if (it == instruments.end()) {
-        Instrument newInstr("./samples/uh.wav", "default", 1);
+        Instrument newInstr("./samples/uh.wav", 0, pitchVal);
         it = instruments.emplace(instrument_id, newInstr).first;
     }
 
