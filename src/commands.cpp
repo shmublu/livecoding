@@ -81,6 +81,7 @@ void change_rhythm_pattern(char pattern, std::string rhythm_name){
 
 
 void change_instrument_pitch(float pitch, std::string instrument_name){
+    std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     auto inst = instruments.find(instrument_name);
     if(inst != instruments.end() && pitch > 0){
         inst->second.pitch = pitch;
@@ -88,6 +89,7 @@ void change_instrument_pitch(float pitch, std::string instrument_name){
 }
 
 char get_instrument_rhythm(std::string instrument_name){
+    std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     auto inst = instruments.find(instrument_name);
     if(inst != instruments.end()){
         std::string rhythm_id = inst->second.rhythm_id;
@@ -97,5 +99,15 @@ char get_instrument_rhythm(std::string instrument_name){
 }
 
 void delete_instrument(std::string instrument_name){
-    auto a = instruments.erase(instrument_name);
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
+    std::cout << "Attempting to delete instrument: " << instrument_name << std::endl;
+
+    // Check if the instrument exists in the map
+    if (instruments.find(instrument_name) != instruments.end()) {
+        std::cout << "Instrument found. Deleting..." << std::endl;
+        instruments.erase(instrument_name);
+        std::cout << "Instrument deleted successfully." << std::endl;
+    } else {
+        std::cout << "Instrument not found. No deletion performed." << std::endl;
+    }
 }
