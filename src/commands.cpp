@@ -45,7 +45,7 @@ void listRhythms() {
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
     std::lock_guard<std::shared_mutex> lock(state_mutex);
-    Instrument newInstrument(filepath, rhythm_name, pitchVal);
+    Instrument newInstrument(filepath, instrument_name, pitchVal);
     instruments.emplace(rhythm_name, newInstrument);
 }
 
