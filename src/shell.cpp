@@ -97,14 +97,8 @@ void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
         return;
     }
     try {
-        // Convert rhythm string to character representation
-        std::string input = stringArgs[0];
-        std::reverse(input.begin(), input.end());
-        std::bitset<8> binaryRepresentation(input);
-        unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
-
         create_rhythm(
-            character,
+            stringArgs[0],
             stringArgs[1]
         );
     } catch (const std::exception& e) {
@@ -126,16 +120,7 @@ void executeDeleteInstrument(const std::vector<std::string>& stringArgs) {
     }
 }
 
-void listFiles(std::vector<std::string> args) {
-    // Implementation for listing files
-    std::cout << "Listing files...\n";
-}
 
-void greet(std::vector<std::string> args) {
-    if (!args.empty()) {
-        std::cout << "Hello, " << args[0] << "!\n";
-    }
-}
 
 void showHelp(std::vector<std::string> args, const std::map<CommandKey, Command>& commands) {
     for (const auto& cmd : commands) {
