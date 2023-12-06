@@ -16,13 +16,6 @@ std::string charToBinary(char c) {
     return std::bitset<8>(c).to_string();
 }
 
-int find_id_num(const std::vector<std::string>& vec, const std::string& value){
-    auto it = std::find(vec.begin(), vec.end(), value);
-    if (it != vec.end()) {
-        return std::distance(vec.begin(), it);
-    }
-    return 0;
-}
 
 void listInstruments() {
     std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
@@ -45,8 +38,13 @@ void listRhythms() {
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
     std::lock_guard<std::shared_mutex> lock(state_mutex);
-    Instrument newInstrument(filepath, rhythm_name, pitchVal);
-    instruments.emplace(instrument_name, newInstrument);
+    if (instruments.find(instrument_name) == instruments.end()) {
+        Instrument newInstrument(filepath, rhythm_name, pitchVal);
+        instruments.emplace(instrument_name, newInstrument);
+        std::cout << "Instrument '" << instrument_name << "' created successfully." << std::endl;
+    } else {
+        std::cout << "Error: Instrument '" << instrument_name << "' already exists." << std::endl;
+    }
 }
 
 
@@ -68,34 +66,52 @@ char convertToChar(const std::string& binaryStr) {
     return character;
 }
 void create_rhythm(std::string input, std::string rhythm_name) {
-    std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
-    //Convert rhythm string to character representation
-    char pattern = convertToChar(input);
-    rhythms[rhythm_name] = {pattern};
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
+    if (rhythms.find(rhythm_name) == rhythms.end()) {
+        char pattern = convertToChar(input);
+        rhythms[rhythm_name] = {pattern};
+        std::cout << "Rhythm '" << rhythm_name << "' created successfully." << std::endl;
+    } else {
+        std::cout << "Error: Rhythm '" << rhythm_name << "' already exists." << std::endl;
+    }
 }
 
 void change_rhythm_pattern(char pattern, std::string rhythm_name){
-    std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
-    rhythms[rhythm_name] = {pattern};
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
+    if (rhythms.find(rhythm_name) != rhythms.end()) {
+        rhythms[rhythm_name] = {pattern};
+        std::cout << "Rhythm pattern for '" << rhythm_name << "' changed successfully." << std::endl;
+    } else {
+        std::cout << "Error: Rhythm '" << rhythm_name << "' not found." << std::endl;
+    }
 }
 
 
 void change_instrument_pitch(float pitch, std::string instrument_name){
-    std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
+    std::shared_lock<std::shared_mutex> lock(state_mutex);
     auto inst = instruments.find(instrument_name);
-    if(inst != instruments.end() && pitch > 0){
-        inst->second.pitch = pitch;
+    if(inst != instruments.end()) {
+        if (pitch > 0) {
+            inst->second.pitch = pitch;
+            std::cout << "Pitch for instrument '" << instrument_name << "' changed to " << pitch << "." << std::endl;
+        } else {
+            std::cout << "Error: Invalid pitch value. Pitch must be greater than 0." << std::endl;
+        }
+    } else {
+        std::cout << "Error: Instrument '" << instrument_name << "' not found." << std::endl;
     }
 }
 
 char get_instrument_rhythm(std::string instrument_name){
-    std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
+    std::shared_lock<std::shared_mutex> lock(state_mutex);
     auto inst = instruments.find(instrument_name);
-    if(inst != instruments.end()){
+    if(inst != instruments.end()) {
         std::string rhythm_id = inst->second.rhythm_id;
         return rhythms[rhythm_id].pattern;
+    } else {
+        std::cout << "Error: Instrument '" << instrument_name << "' not found." << std::endl;
+        return '\0';
     }
-    return '\0';
 }
 
 void delete_instrument(std::string instrument_name){
