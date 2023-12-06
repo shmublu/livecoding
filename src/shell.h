@@ -39,7 +39,6 @@ void executeDeleteInstrument(const std::vector<std::string>& stringArgs);
 void executeChangePitch(const std::vector<std::string>& stringArgs);
 void executeListRhythms(const std::vector<std::string>& stringArgs);
 void executeListInstruments(const std::vector<std::string>& stringArgs);
-void greet(std::vector<std::string> args);
 void showHelp(std::vector<std::string> args, const std::map<CommandKey, Command>& commands);
 
 #endif // SHELL_COMMANDS_H
