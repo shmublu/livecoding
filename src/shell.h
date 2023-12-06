@@ -35,7 +35,7 @@ inline std::vector<std::string> split(const std::string& str, char delim) {
 void executeCommand(const std::string& input, const std::map<CommandKey, Command>& commands);
 void executeCreateRhythm(const std::vector<std::string>& stringArgs);
 void executeCreateInstrument(const std::vector<std::string>& stringArgs);
-void listFiles(std::vector<std::string> args);
+void executeDestroyInstrument(const std::vector<std::string>& stringArgs);
 void greet(std::vector<std::string> args);
 void showHelp(std::vector<std::string> args, const std::map<CommandKey, Command>& commands);
 
