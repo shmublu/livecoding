@@ -28,6 +28,7 @@ public:
     int rhythm_id;
     float pitch;
     Player player;
+    std::string name;
 
     Instrument(const std::string& path, int id, float pitch);
     void play();

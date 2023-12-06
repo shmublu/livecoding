@@ -39,8 +39,8 @@ void executeCreateInstrument(const std::vector<std::string>& stringArgs) {
     try {
         create_instrument(
             "./samples/" + stringArgs[0],
-            std::stoi(stringArgs[1]),
-            std::stoi(stringArgs[2]),
+            stringArgs[1],
+            stringArgs[2],
             std::stoi(stringArgs[3])
         );
     } catch (const std::exception& e) {
@@ -64,7 +64,7 @@ void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
 
         create_rhythm(
             character,
-            std::stoi(stringArgs[1])
+            stringArgs[1]
         );
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << "\n";
