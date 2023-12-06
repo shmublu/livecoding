@@ -32,6 +32,24 @@ void executeCommand(const std::string& input, const std::map<CommandKey, Command
 
 //Commands:
 
+
+void executeChangeRhythmPattern(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 2) {
+        std::cout << "Error: Incorrect number of arguments for change_rhythm_pattern\n";
+        return;
+    }
+
+    try {
+        // Assuming the first argument is a binary string representation of the pattern
+        char pattern = static_cast<char>(std::bitset<8>(stringArgs[0]).to_ulong());
+        std::string rhythm_name = stringArgs[1];
+        
+        change_rhythm_pattern(pattern, rhythm_name);
+        std::cout << "Rhythm pattern changed successfully for rhythm '" << rhythm_name << "'\n";
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+    }
+}
 void executeListInstruments(const std::vector<std::string>& stringArgs) {
     if (stringArgs.size() != 0) {
         std::cout << "Error: Incorrect number of arguments for list_instrument\n";

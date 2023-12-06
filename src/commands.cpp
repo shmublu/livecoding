@@ -2,6 +2,7 @@
 #include "instrument.h"
 #include <vector>
 #include <bitset>
+#include <fstream>
 
 std::unordered_map<std::string, Instrument> instruments;
 std::unordered_map<std::string, Rhythm> rhythms;
@@ -38,13 +39,24 @@ void listRhythms() {
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
     std::lock_guard<std::shared_mutex> lock(state_mutex);
-    if (instruments.find(instrument_name) == instruments.end()) {
-        Instrument newInstrument(filepath, rhythm_name, pitchVal);
-        instruments.emplace(instrument_name, newInstrument);
-        std::cout << "Instrument '" << instrument_name << "' created successfully." << std::endl;
-    } else {
+
+    // Check if the instrument already exists
+    if (instruments.find(instrument_name) != instruments.end()) {
         std::cout << "Error: Instrument '" << instrument_name << "' already exists." << std::endl;
+        return;
     }
+
+    // Check if the file exists
+    std::ifstream file(filepath);
+    if (!file) {
+        std::cout << "Error: File at '" << filepath << "' does not exist." << std::endl;
+        return;
+    }
+
+    // If file exists, proceed to create the instrument
+    Instrument newInstrument(filepath, rhythm_name, pitchVal);
+    instruments.emplace(instrument_name, newInstrument);
+    std::cout << "Instrument '" << instrument_name << "' created successfully." << std::endl;
 }
 
 

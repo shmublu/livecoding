@@ -34,6 +34,7 @@ inline std::vector<std::string> split(const std::string& str, char delim) {
 // Executes a command based on the input string and a map of commands
 void executeCommand(const std::string& input, const std::map<CommandKey, Command>& commands);
 void executeCreateRhythm(const std::vector<std::string>& stringArgs);
+void executeChangeRhythmPattern(const std::vector<std::string>& stringArgs);
 void executeCreateInstrument(const std::vector<std::string>& stringArgs);
 void executeDeleteInstrument(const std::vector<std::string>& stringArgs);
 void executeChangePitch(const std::vector<std::string>& stringArgs);
