@@ -15,6 +15,7 @@ int main() {
     // Registering commands
     commands[{"ci", 4}] = Command{"create_instrument", 4, executeCreateInstrument, "Create an instrument. Usage: ci <file_name> <rhythm_id> <instrument_id> <pitchVal>"};
     commands[{"di", 4}] = Command{"delete_instrument", 1, executeDestroyInstrument, "Create an instrument. Usage: di <instrument_id>"};
+    commands[{"cp", 2}] = Command{"change_pitch", 2, executeChangePitch, "Change an instrument's pitch. Usage: cp <pitchVal> <instrument_id>"};
     commands[{"cr", 2}] = Command{"create_rhythm", 2, executeCreateRhythm, "Create a rhythm. cr <rhythm_pattern> <rhythm_id>"};
     commands[{"greet", 1}] = Command{"greet", 1, greet, "Greet a user by name"};
     commands[{"help", 0}] = Command{"help", 0, [commands](auto args){ showHelp(args, commands); }, "Show help text"};
