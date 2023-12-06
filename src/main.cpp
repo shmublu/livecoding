@@ -3,7 +3,6 @@
 #include "music.h"
 #include <sstream>
 #include <algorithm>
-#include <bitset>
 #include "shell.h"
 
 

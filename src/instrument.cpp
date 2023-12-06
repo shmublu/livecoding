@@ -44,6 +44,7 @@ void Player::loadBuffer(){
     // Load the audio file
     if (!buffer.loadFromFile(filepath)) {
         std::cerr << "Error loading audio file." << std::endl;
+        // return;
     }
 
     // Set the buffer for the sound
