@@ -11,10 +11,8 @@
 struct Rhythm {
     char pattern;
 };
-extern std::unordered_map<int, Instrument> instruments;
-extern std::unordered_map<int, Rhythm> rhythms;
-extern std::vector<std::string> instrument_names;
-extern std::vector<std::string> rhythm_names;
+extern std::unordered_map<std::string, Instrument> instruments;
+extern std::unordered_map<std::string, Rhythm> rhythms;
 extern std::shared_mutex state_mutex;
 
 void start_music_thread();

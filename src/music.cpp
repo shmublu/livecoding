@@ -17,7 +17,7 @@ void music_thread_function() {
 
             for (int bit = 0; bit < bitsInRhythm; ++bit) {
                 for (auto& pair : instruments) {
-                    int instrument_id = pair.first;
+                    std::string instrument_id = pair.first;
                     Instrument& instrument = pair.second;
                     const Rhythm& rhythm = rhythms[instrument.rhythm_id];
                     if (rhythm.pattern & (1ULL << bit)) {

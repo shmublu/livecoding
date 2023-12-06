@@ -1,7 +1,7 @@
 #include "instrument.h"
 #include <unordered_map>
 
-Instrument::Instrument(const std::string& path, int id, float pitchVal) : filepath(path), rhythm_id(id),  pitch(pitchVal), player(path){
+Instrument::Instrument(const std::string& path, std::string id, float pitchVal) : filepath(path), rhythm_id(id),  pitch(pitchVal), player(path){
 }
 
 void Instrument::play(){
