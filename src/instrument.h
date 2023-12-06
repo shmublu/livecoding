@@ -33,7 +33,7 @@ public:
     Instrument(const std::string& path, std::string id, float pitch);
     void play();
 
-    static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, float pitchVal);
+    static Instrument& getInstrument(std::unordered_map<std::string, Instrument>& instruments, std::string instrument_id, float pitchVal);
 
 
 };

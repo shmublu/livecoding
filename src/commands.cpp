@@ -97,5 +97,5 @@ char get_instrument_rhythm(std::string instrument_name){
 }
 
 void delete_instrument(std::string instrument_name){
-    instruments.erase(instrument_name);
+    auto a = instruments.erase(instrument_name);
 }

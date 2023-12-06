@@ -9,7 +9,7 @@ void Instrument::play(){
             this->player.playSound(pitch);
         }).detach(); // Detach the thread to run independently
 }
-Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, float pitchVal) {
+Instrument& Instrument::getInstrument(std::unordered_map<std::string, Instrument>& instruments, std::string instrument_id, float pitchVal) {
     auto it = instruments.find(instrument_id);
 
     // If not found, emplace a new instrument into the map
