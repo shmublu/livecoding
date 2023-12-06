@@ -28,7 +28,7 @@ void listInstruments() {
     std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     std::cout << "Instruments:\n";
     for (const auto& pair : instruments) {
-        std::cout << "Instrument Name: " << pair.second.name << " - Sound File: " << pair.second.filepath  << " - Rhythm Name: " << pair.second.rhythm_id <<"\n";
+        std::cout << "Instrument Name: " << pair.first << " - Sound File: " << pair.second.filepath  << " - Rhythm Name: " << pair.second.rhythm_id <<"\n";
     }
 }
 
@@ -45,8 +45,8 @@ void listRhythms() {
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
     std::lock_guard<std::shared_mutex> lock(state_mutex);
-        Instrument newInstrument(filepath, rhythm_name, pitchVal);
-        instruments.emplace(rhythm_name, newInstrument);
+    Instrument newInstrument(filepath, rhythm_name, pitchVal);
+    instruments.emplace(rhythm_name, newInstrument);
 }
 
 
