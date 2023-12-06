@@ -29,4 +29,7 @@ void change_instrument_file(const std::string& filepath, std::string instrument_
 void change_instrument_pitch(float pitch, std::string instrument_name);
 char get_instrument_rhythm(std::string instrument_name);
 
+void listRhythms();
+void listInstruments();
+
 #endif // MUSIC_H

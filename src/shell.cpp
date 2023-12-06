@@ -31,6 +31,32 @@ void executeCommand(const std::string& input, const std::map<CommandKey, Command
 }
 
 //Commands:
+
+void executeListInstruments(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 0) {
+        std::cout << "Error: Incorrect number of arguments for list_instrument\n";
+        return;
+    }
+    try {
+        listInstruments();
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+        return;
+    }
+}
+
+void executeListRhythms(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 0) {
+        std::cout << "Error: Incorrect number of arguments for list_rhythms\n";
+        return;
+    }
+    try {
+        listRhythms();
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+        return;
+    }
+}
 void executeCreateInstrument(const std::vector<std::string>& stringArgs) {
     if (stringArgs.size() != 4) {
         std::cout << "Error: Incorrect number of arguments for create_instrument\n";
