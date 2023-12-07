@@ -4,7 +4,7 @@
 #include "instrument.h"
 #include <string>
 #include <unordered_map>
-#include <mutex>
+#include <shared_mutex>
 #include <SFML/Audio.hpp>
 
 
@@ -15,7 +15,7 @@ extern std::unordered_map<int, Instrument> instruments;
 extern std::unordered_map<int, Rhythm> rhythms;
 extern std::vector<std::string> instrument_names;
 extern std::vector<std::string> rhythm_names;
-extern std::mutex state_mutex;
+extern std::shared_mutex state_mutex;
 
 void start_music_thread();
 
@@ -25,7 +25,6 @@ void create_rhythm(char pattern, std::string rhythm_id);
 void delete_instrument(std::string instrument_name);
 
 void change_rhythm_pattern(char pattern, std::string rhythm_name);
-void change_instrument_file(const std::string& filepath, std::string instrument_name);
 void change_instrument_pitch(float pitch, std::string instrument_name);
 char get_instrument_rhythm(std::string instrument_name);
 

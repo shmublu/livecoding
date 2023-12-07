@@ -7,7 +7,7 @@ std::unordered_map<int, Instrument> instruments;
 std::unordered_map<int, Rhythm> rhythms;
 std::vector<std::string> instrument_names;
 std::vector<std::string> rhythm_names;
-std::mutex state_mutex;
+std::shared_mutex state_mutex;
 
 bool isDuplicate(const std::vector<std::string>& vec, const std::string& value) {
     return std::find(vec.begin(), vec.end(), value) != vec.end();
@@ -27,7 +27,7 @@ int find_id_num(const std::vector<std::string>& vec, const std::string& value){
 }
 
 void listInstruments() {
-    std::lock_guard<std::mutex> lock(state_mutex); // Ensures thread safety
+    std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     std::cout << "Instruments:\n";
     for (const auto& instrument_name : instrument_names) {
         auto it = std::find_if(instruments.begin(), instruments.end(),
@@ -39,7 +39,7 @@ void listInstruments() {
 }
 
 void listRhythms() {
-    std::lock_guard<std::mutex> lock(state_mutex); // Ensures thread safety
+    std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     std::cout << "Rhythms:\n";
     for (size_t i = 0; i < rhythm_names.size(); ++i) {
         // Use the index to access the corresponding rhythm in the rhythms map
@@ -53,7 +53,7 @@ void listRhythms() {
 
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
-    std::lock_guard<std::mutex> guard(state_mutex);
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
     int rhythm_id = find_id_num(rhythm_names, rhythm_name);
     if(rhythm_id < 0){
         return;
@@ -70,6 +70,7 @@ void create_instrument(const std::string& filepath, std::string rhythm_name, std
 
 
 void create_rhythm(char pattern, std::string rhythm_name) {
+    std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     if (!isDuplicate(rhythm_names, rhythm_name)) {
         int rhythm_id = rhythm_names.size();
         rhythm_names.push_back(rhythm_name);
@@ -78,6 +79,7 @@ void create_rhythm(char pattern, std::string rhythm_name) {
 }
 
 void change_rhythm_pattern(char pattern, std::string rhythm_name){
+    std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     int rhythm_id = find_id_num(rhythm_names, rhythm_name);
     if(rhythm_id < 0){
         return;
@@ -85,16 +87,6 @@ void change_rhythm_pattern(char pattern, std::string rhythm_name){
     rhythms[rhythm_id] = {pattern};
 }
 
-void change_instrument_file(const std::string& filepath, std::string instrument_name){
-    int instrument_id = find_id_num(instrument_names, instrument_name);
-    if(instrument_id < 0){
-        return;
-    }
-    auto inst = instruments.find(instrument_id);
-    if(inst != instruments.end()){
-        inst->second.filepath = filepath;
-    }
-}
 
 void change_instrument_pitch(float pitch, std::string instrument_name){
     int instrument_id = find_id_num(instrument_names, instrument_name);

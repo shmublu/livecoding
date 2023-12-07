@@ -13,7 +13,7 @@ void music_thread_function() {
 
     while (true) {  // Infinite loop to keep the thread running
         {
-            std::lock_guard<std::mutex> guard(state_mutex);
+            std::shared_lock<std::shared_mutex> lock(state_mutex);
 
             for (int bit = 0; bit < bitsInRhythm; ++bit) {
                 for (auto& pair : instruments) {
@@ -21,7 +21,6 @@ void music_thread_function() {
                     Instrument& instrument = pair.second;
                     const Rhythm& rhythm = rhythms[instrument.rhythm_id];
                     if (rhythm.pattern & (1ULL << bit)) {
-                        //std::cout << "ID" << instrument_id << ", ";
                         instrument.play();
                     }
                 }
