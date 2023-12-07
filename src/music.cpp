@@ -13,7 +13,7 @@ void music_thread_function() {
 
     while (true) {  // Infinite loop to keep the thread running
         {
-            std::lock_guard<std::mutex> guard(state_mutex);
+            std::shared_lock<std::shared_mutex> lock(state_mutex);
 
             for (int bit = 0; bit < bitsInRhythm; ++bit) {
                 // std::cout << bit << ": "; 
@@ -37,4 +37,5 @@ void music_thread_function() {
 void start_music_thread() {
     std::thread musicThread(music_thread_function);
     musicThread.detach(); // Detach the thread to run independently
+    std::cerr << "Music thread started.\n"; 
 }

@@ -11,6 +11,19 @@ void Instrument::play(){
         }).detach(); // Detach the thread to run independently
 }
 
+// Instrument& Instrument::getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, float pitchVal) {
+//     // auto it = instruments.find(instrument_id);
+
+//     // // If not found, emplace a new instrument into the map
+//     // if (it == instruments.end()) {
+//     //     Instrument newInstr(0, 0, pitchVal);
+//     //     it = instruments.emplace(instrument_id, newInstr).first;
+//     // }
+
+//     auto it = instruments.find(instrument_id);
+//     return it->second;
+// }
+
 Player::Player(const uint32_t channel) : outputChannel(channel) {
     Player::midiout = 0;
 
@@ -64,4 +77,14 @@ void Player::playSound(float pitch){
         error.printMessage();
         exit(EXIT_FAILURE);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Platform-dependent ... see example in tests directory.
+ 
+    // Note Off: 128, 64, 40
+    message[0] = 128;
+    message[1] = 64;
+    message[2] = 40;
+    midiout->sendMessage( &message );
+
+
 }

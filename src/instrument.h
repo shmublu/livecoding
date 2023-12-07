@@ -21,9 +21,13 @@ public:
     int rhythm_id;
     int pitch;
     Player player;
+    std::string name;
 
     Instrument(const uint32_t outputChannel, int id, int pitch);
+    
     void play();
+
+    //static Instrument& getInstrument(std::unordered_map<int, Instrument>& instruments, int instrument_id, float pitchVal);
 
 };
 
