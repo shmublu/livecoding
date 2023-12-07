@@ -3,10 +3,8 @@
 #include <vector>
 #include <bitset>
 
-std::unordered_map<int, Instrument> instruments;
-std::unordered_map<int, Rhythm> rhythms;
-std::vector<std::string> instrument_names;
-std::vector<std::string> rhythm_names;
+std::unordered_map<std::string, Instrument> instruments;
+std::unordered_map<std::string, Rhythm> rhythms;
 std::shared_mutex state_mutex;
 
 bool isDuplicate(const std::vector<std::string>& vec, const std::string& value) {
@@ -18,54 +16,35 @@ std::string charToBinary(char c) {
     return std::bitset<8>(c).to_string();
 }
 
-int find_id_num(const std::vector<std::string>& vec, const std::string& value){
-    auto it = std::find(vec.begin(), vec.end(), value);
-    if (it != vec.end()) {
-        return std::distance(vec.begin(), it);
-    }
-    return 0;
-}
 
 void listInstruments() {
     std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     std::cout << "Instruments:\n";
-    for (const auto& instrument_name : instrument_names) {
-        auto it = std::find_if(instruments.begin(), instruments.end(),
-                               [&](const auto& pair) { return pair.second.name == instrument_name; });
-        if (it != instruments.end()) {
-            std::cout << "Instrument Name: " << it->second.name << " - Sound File: " << it->second.filepath << "\n";
-        }
+    for (const auto& pair : instruments) {
+        std::cout << "Instrument Name: " << pair.first << " - Sound File: " << pair.second.filepath  << " - Rhythm Name: " << pair.second.rhythm_id <<"\n";
     }
 }
 
 void listRhythms() {
     std::shared_lock<std::shared_mutex> lock(state_mutex); // Ensures thread safety
     std::cout << "Rhythms:\n";
-    for (size_t i = 0; i < rhythm_names.size(); ++i) {
-        // Use the index to access the corresponding rhythm in the rhythms map
-        auto it = rhythms.find(i);
-        if (it != rhythms.end()) {
-            std::cout << "Rhythm Name: " << rhythm_names[i] << " - Pattern: " << charToBinary(it->second.pattern) << "\n";
+    for (const auto& rhythm_pair : rhythms) {
+            std::cout << "Rhythm Name: " << rhythm_pair.first << " - Pattern: " << charToBinary(rhythm_pair.second.pattern) << "\n";
         }
-    }
 }
+
 
 
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
     std::lock_guard<std::shared_mutex> lock(state_mutex);
-    int rhythm_id = find_id_num(rhythm_names, rhythm_name);
-    if(rhythm_id < 0){
-        return;
+    if (instruments.find(instrument_name) == instruments.end()) {
+        Instrument newInstrument(filepath, rhythm_name, pitchVal);
+        instruments.emplace(instrument_name, newInstrument);
+        std::cout << "Instrument '" << instrument_name << "' created successfully." << std::endl;
+    } else {
+        std::cout << "Error: Instrument '" << instrument_name << "' already exists." << std::endl;
     }
-
-    if (!isDuplicate(instrument_names, instrument_name)) {
-        int instrument_id = instrument_names.size();
-        instrument_names.push_back(instrument_name);
-        Instrument newInstrument(filepath, rhythm_id, pitchVal);
-        instruments.emplace(instrument_id, newInstrument);
-    }
-
 }
 
 
@@ -87,55 +66,64 @@ char convertToChar(const std::string& binaryStr) {
     return character;
 }
 void create_rhythm(std::string input, std::string rhythm_name) {
-    std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
-    //Convert rhythm string to character representation
-    char pattern = convertToChar(input);
-
-    if (!isDuplicate(rhythm_names, rhythm_name)) {
-        int rhythm_id = rhythm_names.size();
-        rhythm_names.push_back(rhythm_name);
-        rhythms[rhythm_id] = {pattern};
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
+    if (rhythms.find(rhythm_name) == rhythms.end()) {
+        char pattern = convertToChar(input);
+        rhythms[rhythm_name] = {pattern};
+        std::cout << "Rhythm '" << rhythm_name << "' created successfully." << std::endl;
+    } else {
+        std::cout << "Error: Rhythm '" << rhythm_name << "' already exists." << std::endl;
     }
 }
 
 void change_rhythm_pattern(char pattern, std::string rhythm_name){
-    std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
-    int rhythm_id = find_id_num(rhythm_names, rhythm_name);
-    if(rhythm_id < 0){
-        return;
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
+    if (rhythms.find(rhythm_name) != rhythms.end()) {
+        rhythms[rhythm_name] = {pattern};
+        std::cout << "Rhythm pattern for '" << rhythm_name << "' changed successfully." << std::endl;
+    } else {
+        std::cout << "Error: Rhythm '" << rhythm_name << "' not found." << std::endl;
     }
-    rhythms[rhythm_id] = {pattern};
 }
 
 
 void change_instrument_pitch(float pitch, std::string instrument_name){
-    int instrument_id = find_id_num(instrument_names, instrument_name);
-    if(instrument_id < 0){
-        return;
-    }
-    auto inst = instruments.find(instrument_id);
-    if(inst != instruments.end() && pitch > 0){
-        inst->second.pitch = pitch;
+    std::shared_lock<std::shared_mutex> lock(state_mutex);
+    auto inst = instruments.find(instrument_name);
+    if(inst != instruments.end()) {
+        if (pitch > 0) {
+            inst->second.pitch = pitch;
+            std::cout << "Pitch for instrument '" << instrument_name << "' changed to " << pitch << "." << std::endl;
+        } else {
+            std::cout << "Error: Invalid pitch value. Pitch must be greater than 0." << std::endl;
+        }
+    } else {
+        std::cout << "Error: Instrument '" << instrument_name << "' not found." << std::endl;
     }
 }
 
 char get_instrument_rhythm(std::string instrument_name){
-    int instrument_id = find_id_num(instrument_names, instrument_name);
-    if(instrument_id < 0){
+    std::shared_lock<std::shared_mutex> lock(state_mutex);
+    auto inst = instruments.find(instrument_name);
+    if(inst != instruments.end()) {
+        std::string rhythm_id = inst->second.rhythm_id;
+        return rhythms[rhythm_id].pattern;
+    } else {
+        std::cout << "Error: Instrument '" << instrument_name << "' not found." << std::endl;
         return '\0';
     }
-    auto inst = instruments.find(instrument_id);
-    if(inst != instruments.end()){
-        int rhythm_id = inst->second.rhythm_id;
-        return rhythms[rhythm_id].pattern;
-    }
-    return '\0';
 }
 
 void delete_instrument(std::string instrument_name){
-    int instrument_id = find_id_num(instrument_names, instrument_name);
-    if(instrument_id < 0){
-        return;
+    std::lock_guard<std::shared_mutex> lock(state_mutex);
+    std::cout << "Attempting to delete instrument: " << instrument_name << std::endl;
+
+    // Check if the instrument exists in the map
+    if (instruments.find(instrument_name) != instruments.end()) {
+        std::cout << "Instrument found. Deleting..." << std::endl;
+        instruments.erase(instrument_name);
+        std::cout << "Instrument deleted successfully." << std::endl;
+    } else {
+        std::cout << "Instrument not found. No deletion performed." << std::endl;
     }
-    instruments.erase(instrument_id);
 }
