@@ -18,7 +18,6 @@ int main() {
     commands[{"di", 1}] = Command{"delete_instrument", 1, executeDeleteInstrument, "Delete an instrument. Usage: di <instrument_id>"};
     commands[{"li", 0}] = Command{"list_instruments", 0, executeListInstruments, "List instruments. Usage: li"};
     commands[{"lr", 0}] = Command{"list_rhythms", 0, executeListRhythms, "List rhythms. Usage: lr"};
-    commands[{"greet", 1}] = Command{"greet", 1, greet, "Greet a user by name"};
     commands[{"help", 0}] = Command{"help", 0, [commands](auto args){ showHelp(args, commands); }, "Show help text"};
     
     while (true) {

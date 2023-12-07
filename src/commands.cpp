@@ -69,8 +69,28 @@ void create_instrument(const std::string& filepath, std::string rhythm_name, std
 }
 
 
-void create_rhythm(char pattern, std::string rhythm_name) {
+char convertToChar(const std::string& binaryStr) {
+    // Check if the string length is 8
+    if (binaryStr.length() != 8) {
+        throw std::invalid_argument("Error: String must be 8 characters long.");
+    }
+
+    // Check if the string contains only '0's and '1's
+    for (char c : binaryStr) {
+        if (c != '0' && c != '1') {
+            throw std::invalid_argument("Error: String must contain only '0's and '1's.");
+        }
+    }
+
+    // Convert binary string to character
+    char character = static_cast<char>(std::bitset<8>(binaryStr).to_ulong());
+    return character;
+}
+void create_rhythm(std::string input, std::string rhythm_name) {
     std::lock_guard<std::shared_mutex> lock(state_mutex); // Ensures thread safety
+    //Convert rhythm string to character representation
+    char pattern = convertToChar(input);
+
     if (!isDuplicate(rhythm_names, rhythm_name)) {
         int rhythm_id = rhythm_names.size();
         rhythm_names.push_back(rhythm_name);
