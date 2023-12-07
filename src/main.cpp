@@ -12,10 +12,10 @@ int main() {
     std::map<CommandKey, Command> commands;
 
     // Registering commands
-    commands[{"ci", 4}] = Command{"create_instrument", 4, executeCreateInstrument, "Create an instrument"};
-    commands[{"cr", 2}] = Command{"create_rhythm", 2, executeCreateRhythm, "Create a rhythm"};
-    commands[{"di", 1}] = Command{"delet_instrument", 1, executeDeleteInstrument, "Delete an instrument"};
-    commands[{"ls", 0}] = Command{"ls", 0, listFiles, "List files in the current directory"};
+    commands[{"ci", 4}] = Command{"create_instrument", 4, executeCreateInstrument, "Create an instrument. Usage: ci <file_name> <rhythm_id> <instrument_id> <pitchVal>"};
+    commands[{"cp", 2}] = Command{"change_pitch", 2, executeChangePitch, "Change an instrument's pitch. Usage: cp <pitchVal> <instrument_id>"};
+    commands[{"cr", 2}] = Command{"create_rhythm", 2, executeCreateRhythm, "Create a rhythm. Usage: cr <rhythm_pattern> <rhythm_id>"};
+    commands[{"di", 1}] = Command{"delete_instrument", 1, executeDeleteInstrument, "Delete an instrument. Usage: di <instrument_id>"};
     commands[{"greet", 1}] = Command{"greet", 1, greet, "Greet a user by name"};
     commands[{"help", 0}] = Command{"help", 0, [commands](auto args){ showHelp(args, commands); }, "Show help text"};
     

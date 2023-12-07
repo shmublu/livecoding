@@ -36,6 +36,7 @@ void create_instrument(const std::string& filepath, std::string rhythm_name, std
 
 }
 
+
 void create_rhythm(char pattern, std::string rhythm_name) {
     if (!isDuplicate(rhythm_names, rhythm_name)) {
         int rhythm_id = rhythm_names.size();

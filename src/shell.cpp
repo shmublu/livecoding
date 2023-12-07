@@ -49,6 +49,21 @@ void executeCreateInstrument(const std::vector<std::string>& stringArgs) {
     }
 }
 
+void executeChangePitch(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 2) {
+        std::cout << "Error: Incorrect number of arguments for change_pitch\n";
+        return;
+    }
+    try {
+        change_instrument_pitch(
+            std::stof(stringArgs[0]),
+            stringArgs[1]
+        );
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+    }
+}
+
 
 void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
     if (stringArgs.size() != 2) {

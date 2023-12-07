@@ -18,6 +18,7 @@ extern std::vector<std::string> rhythm_names;
 extern std::mutex state_mutex;
 
 void start_music_thread();
+
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitch);
 void create_rhythm(char pattern, std::string rhythm_id);
 
