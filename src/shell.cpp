@@ -1,5 +1,6 @@
 #include "shell.h"
 #include "music.h"
+#include <bitset>
 
 enum class ArgType { INT, FLOAT, STRING };
 struct TypedArg {
@@ -38,26 +39,13 @@ void executeCreateInstrument(const std::vector<std::string>& stringArgs) {
     try {
         create_instrument(
             "./samples/" + stringArgs[0],
-            std::stoi(stringArgs[1]),
-            std::stoi(stringArgs[2]),
+            stringArgs[1],
+            stringArgs[2],
             std::stoi(stringArgs[3])
         );
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << "\n";
-    }
-}
-
-void executeDestroyInstrument(const std::vector<std::string>& stringArgs) {
-    if (stringArgs.size() != 1) {
-        std::cout << "Error: Incorrect number of arguments for destroy_instrument\n";
         return;
-    }
-    try {
-        destroy_instrument(
-            stoi(stringArgs[0])
-        );
-    } catch (const std::exception& e) {
-        std::cout << "Error: " << e.what() << "\n";
     }
 }
 
@@ -69,7 +57,7 @@ void executeChangePitch(const std::vector<std::string>& stringArgs) {
     try {
         change_instrument_pitch(
             std::stof(stringArgs[0]),
-            std::stoi(stringArgs[1])
+            stringArgs[1]
         );
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << "\n";
@@ -83,13 +71,38 @@ void executeCreateRhythm(const std::vector<std::string>& stringArgs) {
         return;
     }
     try {
+        // Convert rhythm string to character representation
+        std::string input = stringArgs[0];
+        std::reverse(input.begin(), input.end());
+        std::bitset<8> binaryRepresentation(input);
+        unsigned char character = static_cast<unsigned char>(binaryRepresentation.to_ulong());
+
         create_rhythm(
-            stringArgs[0][0],
-            std::stoi(stringArgs[1])
+            character,
+            stringArgs[1]
         );
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << "\n";
     }
+}
+
+void executeDeleteInstrument(const std::vector<std::string>& stringArgs) {
+    if (stringArgs.size() != 1) {
+        std::cout << "Error: Incorrect number of arguments for delete_instrument\n";
+        return;
+    }
+    try {
+        delete_instrument(
+            stringArgs[0]
+        );
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << e.what() << "\n";
+    }
+}
+
+void listFiles(std::vector<std::string> args) {
+    // Implementation for listing files
+    std::cout << "Listing files...\n";
 }
 
 void greet(std::vector<std::string> args) {

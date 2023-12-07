@@ -26,24 +26,16 @@ Player::Player(const std::string& path) : filepath(path) {
 }
 
 void Player::playSound(float pitch){
-    // Load the audio file
-    
     loadBuffer();
     sound.setPitch(pitch);
-
     sound.play();
-    /*
-    // Wait until the sound finishes playing
-    while (sound.getStatus() == sf::Sound::Playing) {
-        // You can add other logic here if needed
-    }
-    */
 }
 
 void Player::loadBuffer(){
     // Load the audio file
     if (!buffer.loadFromFile(filepath)) {
         std::cerr << "Error loading audio file." << std::endl;
+        // return;
     }
 
     // Set the buffer for the sound
