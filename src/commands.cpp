@@ -1,6 +1,7 @@
 #include "music.h"
 #include "instrument.h"
 #include <vector>
+#include <bitset>
 
 std::unordered_map<int, Instrument> instruments;
 std::unordered_map<int, Rhythm> rhythms;
@@ -12,6 +13,11 @@ bool isDuplicate(const std::vector<std::string>& vec, const std::string& value) 
     return std::find(vec.begin(), vec.end(), value) != vec.end();
 }
 
+
+std::string charToBinary(char c) {
+    return std::bitset<8>(c).to_string();
+}
+
 int find_id_num(const std::vector<std::string>& vec, const std::string& value){
     auto it = std::find(vec.begin(), vec.end(), value);
     if (it != vec.end()) {
@@ -19,6 +25,32 @@ int find_id_num(const std::vector<std::string>& vec, const std::string& value){
     }
     return 0;
 }
+
+void listInstruments() {
+    std::lock_guard<std::mutex> lock(state_mutex); // Ensures thread safety
+    std::cout << "Instruments:\n";
+    for (const auto& instrument_name : instrument_names) {
+        auto it = std::find_if(instruments.begin(), instruments.end(),
+                               [&](const auto& pair) { return pair.second.name == instrument_name; });
+        if (it != instruments.end()) {
+            std::cout << "Instrument Name: " << it->second.name << " - Sound File: " << it->second.filepath << "\n";
+        }
+    }
+}
+
+void listRhythms() {
+    std::lock_guard<std::mutex> lock(state_mutex); // Ensures thread safety
+    std::cout << "Rhythms:\n";
+    for (size_t i = 0; i < rhythm_names.size(); ++i) {
+        // Use the index to access the corresponding rhythm in the rhythms map
+        auto it = rhythms.find(i);
+        if (it != rhythms.end()) {
+            std::cout << "Rhythm Name: " << rhythm_names[i] << " - Pattern: " << charToBinary(it->second.pattern) << "\n";
+        }
+    }
+}
+
+
 
 void create_instrument(const std::string& filepath, std::string rhythm_name, std::string instrument_name, int pitchVal) {
     std::lock_guard<std::mutex> guard(state_mutex);
