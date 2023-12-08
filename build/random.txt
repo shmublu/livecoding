@@ -1,0 +1,27 @@
+.L seqpp
+#include "../src/music.h"
+start_music_thread()
+
+#include <random>
+#include <string>
+#include <iostream>
+using namespace std;
+
+std::random_device dev;
+std::mt19937 rng(dev());
+std::uniform_int_distribution<std::mt19937::result_type> dist6(0,9); // distribution in range [0, 9]
+
+for(uint32_t i = 0; i < 4; i++) {
+	string pattern = "";
+	for(int j = 0; j < 8; j++) {
+		pattern.push_back((char) dist6(rng) + '0');
+	}	
+	cout << pattern << endl;
+	create_rhythm(pattern, to_string(i));
+	create_instrument(i + 1, to_string(i), to_string(i));
+}
+
+
+
+
+

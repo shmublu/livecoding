@@ -1,0 +1,24 @@
+
+
+.L seqpp
+#include "../src/music.h"
+start_music_thread()
+
+create_rhythm("12345671", "test");
+create_instrument(1, "test", "clap");
+
+delete_instrument("clap")
+delete_instrument("i lied it's the second (...)");
+
+create_rhythm("01030500", "test2");
+create_instrument(2, "test2", "clap2");
+
+create_rhythm("00000001", "home")
+create_instrument(3, "home", "third")
+
+
+create_rhythm("30305050", "four")
+create_instrument(4, "four", "fourth")
+
+create_rhythm("33332222", "third_again")
+create_instrument(2, "third_again", "i lied it's the second (...)")
