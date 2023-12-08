@@ -1,9 +1,7 @@
-Yau-Meng Wong, Dalia Etessami, Shmuel Berman
-12/08/23
-Design in C++
+
 Live Coding with Seq++ Manual
-Git Repository
-https://github.com/shmublu/livecoding
+
+
 Key Features
 Live Coding: Modify and create music on the fly, with changes taking effect in real time.
 Rhythmic Patterns: Utilize patterns as rhythms where every bit represents 1/8 of a second in a repeating cycle, allowing for intricate and varied rhythmic compositions.
