@@ -1,5 +1,12 @@
-
 Live Coding with Seq++ Manual
+
+DEMOS:
+
+https://youtu.be/DZi7UhxmMEo
+
+https://youtu.be/7PzMGss335g
+
+https://youtu.be/VtUtDDlT8E8
 
 
 Key Features
