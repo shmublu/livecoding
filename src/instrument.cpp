@@ -2,11 +2,11 @@
 #include <unordered_map>
 #include <iostream>
 
-Instrument::Instrument(const uint32_t channel, int id, int pitchVal) : outputChannel(channel), rhythm_id(id),  pitch(pitchVal), player(channel){
+Instrument::Instrument(const uint32_t channel, int id) : outputChannel(channel), rhythm_id(id), player(channel){
 }
 
-void Instrument::play(){
-    std::thread([this]() {
+void Instrument::play(float pitch){
+    std::thread([this, pitch]() {
             this->player.playSound(pitch);
         }).detach(); // Detach the thread to run independently
 }
@@ -66,9 +66,9 @@ Player::Player(const uint32_t channel) : outputChannel(channel) {
 
 void Player::playSound(float pitch){
     std::vector<unsigned char> message(3);
-    // Note On: 144, 64, 90
+    // Note On
     message[0] = 144;
-    message[1] = 64;
+    message[1] = pitch;
     message[2] = 90;
     try {
         midiout->sendMessage( &message );
@@ -80,11 +80,35 @@ void Player::playSound(float pitch){
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Platform-dependent ... see example in tests directory.
  
-    // Note Off: 128, 64, 40
+    // Note Off
     message[0] = 128;
-    message[1] = 64;
+    message[1] = pitch;
     message[2] = 40;
-    midiout->sendMessage( &message );
+    try {
+        midiout->sendMessage( &message );
+    }
+    catch ( RtMidiError &error ) {
+        error.printMessage();
+        exit(EXIT_FAILURE);
+    }
+}
 
+void Instrument::off(float pitch) {
+    this->player.off(pitch);
+}
 
+void Player::off(float pitch) {
+    std::vector<unsigned char> message(3);
+    std::cout << "OFF" << std::endl;
+    // Note Off
+    message[0] = 128;
+    message[1] = pitch;
+    message[2] = 40;
+    try {
+        midiout->sendMessage( &message );
+    }
+    catch ( RtMidiError &error ) {
+        error.printMessage();
+        exit(EXIT_FAILURE);
+    }
 }
