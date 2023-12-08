@@ -10,7 +10,6 @@ const int bitsInRhythm = 8;
 const std::chrono::milliseconds interval(periodSeconds * 1000 / bitsInRhythm);
 
 void music_thread_function() {
-
     while (true) {  // Infinite loop to keep the thread running
         {
             std::shared_lock<std::shared_mutex> lock(state_mutex);
@@ -24,12 +23,16 @@ void music_thread_function() {
                         instrument.play();
                     }
                 }
+                // Release the lock before sleeping
+                lock.unlock();
                 std::this_thread::sleep_for(interval);
+                // Re-acquire the lock after sleeping
+                lock.lock();
             }
         }
-        std::this_thread::sleep_for(interval);
     }
 }
+
 
 void start_music_thread() {
     std::thread musicThread(music_thread_function);
