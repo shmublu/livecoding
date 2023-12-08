@@ -3,11 +3,17 @@ Live Coding with Seq++ Manual
 
 
 Key Features
+
 Live Coding: Modify and create music on the fly, with changes taking effect in real time.
+
 Rhythmic Patterns: Utilize patterns as rhythms where every bit represents 1/8 of a second in a repeating cycle, allowing for intricate and varied rhythmic compositions.
+
 Instrument Management: Create, modify, and delete instruments, providing a diverse palette of sounds for your compositions.
+
 Dynamic Interaction: Change instrument pitches and rhythm patterns instantaneously, enabling a highly interactive and responsive music-making experience.
+
 Sound files come from the samples folder, and more sound files can be added by the end user.
+
 Shell Version Available Commands
 1. Create Instrument (ci)
 Usage: ci <file_name> <rhythm_id> <instrument_id> <pitchVal>
