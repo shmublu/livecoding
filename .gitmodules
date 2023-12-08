@@ -1,0 +1,3 @@
+[submodule "external/rtmidi"]
+	path = external/rtmidi
+	url = https://github.com/thestk/rtmidi/tree/a0c661553f36f24cabb78eb79d8eff2da09ddac5
